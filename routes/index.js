@@ -3,97 +3,79 @@ const router = express.Router();
 const fs = require('fs/promises');
 const { readdir } = require('fs/promises');
 const { readFile } = require('fs/promises');
-//const { stat } = require ('fs/promises');
 const path = require('path');
-const open = require('fs/promises');
-const close = require('fs/promises');
+
+let startPath = `D:\\1\\`
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
+});
 
-  let startPath = `D:\\1\\`
+router.post('/txt', function (req, res, next) {
+  let data = [];
 
-  async function momo() {
+  async function textContent() {
     try {
       const files = await readdir(startPath);
       for (const file of files) {
-        //console.log(file);
         const newPath = path.join(startPath, file);
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
-          console.log("'%s' is a file.", newPath);
           if (path.extname(file) == ".txt") {
-            console.log("Open file '%s'.", file);
-            read(newPath);
-           
+            readfile = await read(newPath);
+            data.push({"Name":file, "Text": readfile});        
           };
-          // нужно сделать проверку на тхт и если это он открыть если нет дальше перебирать
-        } else if (stat.isDirectory()) {
-          console.log("'%s' is a directory.", newPath);
-        }
-      }
-      //await read(file);
+        } 
+      }  
+    } catch (err) {
+      console.error(err);
+    }
+    res.send(data);
+  }
+
+  async function read(fileName) {
+    try {
+      const content = await readFile(fileName, 'utf8', 'r');     
+      return content;
     } catch (err) {
       console.error(err);
     }
 
   }
-    
-
-  async function read(fileName) {
-    let file;
-try {
-  file = await fs.open(fileName, 'r');
-  const stat = await file.stat();
-  // use stat
-    console.log(stat);
-    const promise = readFile(fileName,'utf8', 'r' );
-    await promise;
-    console.log(promise);
-} catch (err) {
-  // When a request is aborted - err is an AbortError
-  console.error(err);
-} finally {
-  await file.close(fileName);
-}
-
-
-    /*try {
-      //const controller = new AbortController();
-      //const { signal } = controller;
-      //const promise = readFile(fileName, { signal });
-      const promise = readFile(fileName,'utf8', 'r' );
-      // Abort the request before the promise settles.
-      //controller.abort();
-
-      await promise;
-    } catch (err) {
-      // When a request is aborted - err is an AbortError
-      console.error(err);
-    }*/
-  }
-  momo();
-  //read(`D:\\1\\123.txt`);
-
-
-
+  textContent();
+ 
 });
 
+// дир 
+router.post('/dir', function (req, res, next) {
+  
+  let data = [];
+  let sendFile = [];
+  let sendDir = [];
 
-
-
-/*import { unlinkSync } from 'fs';
-
-try {
-  unlinkSync('/tmp/hello');
-  console.log('successfully deleted /tmp/hello');
-} catch (err) {
-  // handle the error
-}*/
-
-//import { readdir } from 'fs/promises';
-
-
+  async function fileOrDir() {
+    try {
+      const files = await readdir(startPath);
+      for (const file of files) {
+        const newPath = path.join(startPath, file);
+        const stat = await fs.stat(newPath);
+        if (stat.isFile()) {
+          sendFile.push({ "File":file });              
+        } else if (stat.isDirectory()) {
+          sendDir.push({ "Directory": file });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    data.splice(0,0, sendFile,);
+    data.splice(0,0, sendDir);   
+    //res.json(data);
+    console.log(data);
+    res.send(data);
+  }
+  fileOrDir(); 
+});
 
 module.exports = router;
