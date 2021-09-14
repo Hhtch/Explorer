@@ -9,7 +9,7 @@ let startPath = `D:\\1\\`
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Explorer' });
 });
 
 router.post('/txt', function (req, res, next) {
@@ -50,7 +50,6 @@ router.post('/txt', function (req, res, next) {
 // дир 
 router.post('/dir', function (req, res, next) {
   
-  let data = [];
   let sendFile = [];
   let sendDir = [];
 
@@ -61,19 +60,16 @@ router.post('/dir', function (req, res, next) {
         const newPath = path.join(startPath, file);
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
-          sendFile.push({ "File":file });              
+          sendFile.push( file );                       
         } else if (stat.isDirectory()) {
-          sendDir.push({ "Directory": file });
+          sendDir.push( file );
         }
       }
     } catch (err) {
       console.error(err);
     }
-    data.splice(0,0, sendFile,);
-    data.splice(0,0, sendDir);   
-    //res.json(data);
-    console.log(data);
-    res.send(data);
+    let data = { "File": sendFile, "Directory" : sendDir };
+    res.json(data); 
   }
   fileOrDir(); 
 });
