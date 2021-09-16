@@ -17,16 +17,14 @@ async function getTxt( fileName )    {
       Name = listName[i];          
       if ( Name == fileName){
         //console.log(Name);
-        fetch('/txtchoose', {
-          method: 'POST',
+       
+        document.location.href = `/txtprint${fileName}`;   
+        /*await fetch('/txtprint' + fileName , {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            "Name": fileName, 
-          }),
-        });
-        document.location.href = "/txtprint";       
+          }          
+        }); */   
       }
     }
     if(listName.indexOf( fileName ) == -1 ) console.log( `Не умею открывать этот файл ${fileName}` )

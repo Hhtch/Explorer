@@ -1,4 +1,4 @@
-async function openTxt( )    {
+async function openTxt( fileName)    {
     let response = await fetch('/txt', {
         method: 'POST',
         headers: {
@@ -7,8 +7,8 @@ async function openTxt( )    {
         body: JSON.stringify(),
     });
     result = await response.json();
-
-    let res = await fetch('/txtchoose', {
+    console.log(result);
+   /* let res = await fetch('/txtprint', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -17,6 +17,8 @@ async function openTxt( )    {
   });
     currentTxt = await res.json();
     console.log(currentTxt.Name);
+*/
+ console.log(fileName);
 
     let listName = [];
     let listText = [];
@@ -28,7 +30,7 @@ async function openTxt( )    {
             
     for (let i = 0; i < listName.length; i++) {
       Name = listName[i];          
-      if ( Name == currentTxt.Name){        
+      if ( Name == fileName){        
         let p = document.createElement('p');
         p.appendChild(document.createTextNode( listText[i] ));
         document.body.appendChild(p);
@@ -37,4 +39,3 @@ async function openTxt( )    {
     
   console.log('aaa');  
 }
-openTxt( );
