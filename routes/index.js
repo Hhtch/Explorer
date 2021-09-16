@@ -1,4 +1,5 @@
 const express = require('express');
+const { appendFile } = require('fs');
 const router = express.Router();
 const fs = require('fs/promises');
 const { readdir } = require('fs/promises');
@@ -10,6 +11,17 @@ let startPath = `D:\\1\\`
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Explorer' });
+});
+
+router.get('/txtprint', function (req, res, next) {
+  //console.log(req.body.Name);
+  res.render('txt');
+});
+
+router.post('/txtchoose', function (req, res, next) { 
+  console.log(req.body.Name);   
+  res.json({"Name":req.body.Name });
+  //res.sendStatus(200);  
 });
 
 router.post('/txt', function (req, res, next) {

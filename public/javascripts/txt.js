@@ -13,13 +13,22 @@ async function getTxt( fileName )    {
       listName.push( result[i].Name );
       listText.push( result[i].Text );      
     }
-   // console.log(listName);
-   //console.log(TelistTextxt);
     for (let i = 0; i < listName.length; i++) {
-      Name = listName[i];      
+      Name = listName[i];          
       if ( Name == fileName){
-        console.log(Name);
+        //console.log(Name);
+        fetch('/txtchoose', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "Name": fileName, 
+          }),
+        });
+        document.location.href = "/txtprint";       
       }
     }
-    if(listName.indexOf( fileName ) == -1 ) console.log( `Не умею открывать этот файл ${fileName}` ) 
+    if(listName.indexOf( fileName ) == -1 ) console.log( `Не умею открывать этот файл ${fileName}` )
+    
 }
