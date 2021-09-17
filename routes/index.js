@@ -13,14 +13,13 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Explorer' });
 });
 
-router.get(`/txtprint:fileName`, function (req, res, next) {
+router.get(`/txtprint/:fileName`, function (req, res, next) {
   console.log(req.params);
   console.log( req.params.fileName );    
   let fileName = req.params.fileName;
-  let data = [];
   let listName = [];
   let listText = [];
-  let aaaaa; 
+ 
   async function textContent() {
     try {
       const files = await readdir(startPath);
@@ -29,31 +28,23 @@ router.get(`/txtprint:fileName`, function (req, res, next) {
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
           if (path.extname(file) == ".txt") {
+            listName.push(file);
             readfile = await read(newPath);
-            data.push({"Name":file, "Text": readfile});        
+            listText.push(readfile);        
           };
         }
-      //console.log(data);       
-      for (let i = 0; i < data.length; i++){
-        listName.push( data[i].Name );
-        listText.push( data[i].Text );      
-      }
-      //console.log(listName);     
-      //console.log(listText); 
+        }
       for (let i = 0; i < listName.length; i++) {
         Name = listName[i];
-        textetot = listText[i];          
-        if ( Name == fileName){ 
-          aaaaa = textetot;
-          console.log(aaaaa);      
-          res.render('txt', { fileName: aaaaa });
-        }
-      }
-      }  
+        TextContent = listText[i];          
+        if ( Name == fileName){                       
+          res.render('txt', { fileName: TextContent });
+          break;
+        }      
+      }              
     } catch (err) {
       console.error(err);
-    }
-    //res.send(data);
+    }    
   }
 
   async function read(fileName) {
@@ -66,25 +57,13 @@ router.get(`/txtprint:fileName`, function (req, res, next) {
 
   }
   textContent();
- 
-
-  console.log(aaaaa);
-
-
   
 });
-/*
-router.post('/txtchoose', function (req, res, next) {
-  nnn = req.body.Name;
-  console.log( nnn );    
-  res.json({"Name":nnn });
-//res.render('txt',{ currentTxt: req.body.Name });  
-});
-*/
-router.post('/txt', function (req, res, next) {
+
+router.post('/gettxt', function (req, res, next) {
   let data = [];
 
-  async function textContent() {
+  async function textName() {
     try {
       const files = await readdir(startPath);
       for (const file of files) {
@@ -92,32 +71,21 @@ router.post('/txt', function (req, res, next) {
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
           if (path.extname(file) == ".txt") {
-            readfile = await read(newPath);
-            data.push({"Name":file, "Text": readfile});        
+            data.push({ "Name":file });        
           };
         } 
       }  
     } catch (err) {
       console.error(err);
     }
-    res.send(data);
+    res.send(data);   
   }
-
-  async function read(fileName) {
-    try {
-      const content = await readFile(fileName, 'utf8', 'r');     
-      return content;
-    } catch (err) {
-      console.error(err);
-    }
-
-  }
-  textContent();
+  textName();
  
 });
 
 // дир 
-router.post('/dir', function (req, res, next) {
+router.post('/getdir', function (req, res, next) {
   
   let sendFile = [];
   let sendDir = [];

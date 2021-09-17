@@ -1,5 +1,5 @@
 async function getFileOrDir() {
-  let response = await fetch('/dir', {
+  let response = await fetch('/getdir', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
