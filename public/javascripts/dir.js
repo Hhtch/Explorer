@@ -1,15 +1,18 @@
 async function getFileOrDir() {
   let response = await fetch('/getdir', {
-    method: 'POST',
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(),
+    
   });
 
   result = await response.json();
+  console.log(result);
   let Files = result.File;
   let Dirs = result.Directory;
+  let Path = result.Path;
+  console.log(`tyt putb ${Path}`)
 
   for (let i = 0; i < Files.length; i++) {    
     let list = document.getElementById('files');
@@ -29,6 +32,8 @@ async function getFileOrDir() {
     let list = document.getElementById('dirs');
     let div = document.createElement('div');
     div.setAttribute('class', 'flex-item');
+    Directory = Dirs[i];
+    div.addEventListener ("click", () => {document.location.href = `path=/${Path}${Dirs[i]}`  }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
     img.src = "/images/folder.png";

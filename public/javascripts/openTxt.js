@@ -14,7 +14,7 @@ async function getTxt( fileName )    {
     for (let i = 0; i < listName.length; i++) {
       Name = listName[i];          
       if ( Name == fileName){
-        document.location.href = `/txtprint/${fileName}`;   
+        document.location.href = `/txt/${fileName}`;   
       }
     }
     if(listName.indexOf( fileName ) == -1 ) console.log( `Не умею открывать этот файл ${fileName}` )   
