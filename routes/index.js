@@ -6,54 +6,34 @@ const { readdir } = require('fs/promises');
 const { readFile } = require('fs/promises');
 const path = require('path');
 const clearPath = `D:\\1\\`;
-let startPath = clearPath;
-
-
+let startPath;
+let lastDir;
 /* GET home page. */
 router.get(`/`, function (req, res, next) {
+  startPath = clearPath;
   res.render('index', { title: 'Explorer' });
 });
 
+router.get(`/path=\*newdir=:dirName`, function (req, res, next) {
+  // GET http://localhost:3000/path=D:/1/dir/Browser 404 Символ * означает, что на ее месте может быть абсолютно любая последовательность символов, не ограниченная по длине.
+  console.log( `${req.params.dirName} Name takoy dir posledniy pered +++++ `); 
+  let dir = req.params.dirName;
+  startPath = startPath + dir + '\\';
+  console.log(`${startPath} Name takoy dir stal posle ++++++ `);  
+   
+  res.render('dir', { title: 'Explorer' });
+ });
 
-router.get(`/path=/\*:startPath/:dirName`, function (req, res, next) {
+ router.get(`/lastpath=\*newdir=:dirName`, function (req, res, next) {
   // GET http://localhost:3000/path=D:/1/dir/Browser 404 Символ * означает, что на ее месте может быть абсолютно любая последовательность символов, не ограниченная по длине.
   console.log(req.params);
-  console.log( req.params.dirName);
-  console.log( req.params.startPath);
-  
-  let dir = req.params.dirName;
-  if (dir == 'home'){
-    startPath = clearPath; 
-  }  else{
-    startPath = startPath + dir + '\\';
-  console.log(startPath);  
-  
-  }
-  res.render('index', { title: 'Explorer' });
- /*
-  let sendFile = [];
-  let sendDir = [];
+  startPath = req.params[0];
+  console.log(`${startPath} Name takoy dir stal posle ------- `);  
+   
+  res.render('dir', { title: 'Explorer' });
+ });
 
-  async function fileOrDir() {
-    try {
-      const files = await readdir(startPath);
-      for (const file of files) {
-        const newPath = path.join(startPath, file);
-        const stat = await fs.stat(newPath);
-        if (stat.isFile()) {
-          sendFile.push( file );                       
-        } else if (stat.isDirectory()) {
-          sendDir.push( file );
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    let data = { "File": sendFile, "Directory" : sendDir };
-    res.json(data); 
-  }
-  fileOrDir(); */
-});
+
 /*
 router.get(`/prathclear:${clearPath}`, function (req, res, next) {
   console.log(req.params);
@@ -133,36 +113,7 @@ router.post('/gettxt', function (req, res, next) {
  
 });
 
-// дир 
-/*
-router.post('/startdir', function (req, res, next) {
-  
-  let sendFile = [];
-  let sendDir = [];
-
-  async function fileOrDir() {
-    try {
-      const files = await readdir(startPath);
-      for (const file of files) {
-        const newPath = path.join(startPath, file);
-        const stat = await fs.stat(newPath);
-        if (stat.isFile()) {
-          sendFile.push( file );                       
-        } else if (stat.isDirectory()) {
-          sendDir.push( file );
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    let data = { "File": sendFile, "Directory" : sendDir };
-    res.json(data); 
-  }
-  fileOrDir(); 
-});*/
-
-
-router.get('/getdir', function (req, res, next) {
+router.post('/getdir', function (req, res, next) {
   console.log(`tyt ${startPath}  takoy`)
   let sendFile = [];
   let sendDir = [];
@@ -181,7 +132,7 @@ router.get('/getdir', function (req, res, next) {
     } catch (err) {
       console.error(err);
     }
-    let data = { "File": sendFile, "Directory" : sendDir, "Path": startPath };
+    let data = { "File": sendFile, "Directory" : sendDir, "Path": startPath, "ClearPath": clearPath };
     res.json(data); 
   }
   fileOrDir(); 

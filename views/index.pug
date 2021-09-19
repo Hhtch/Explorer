@@ -2,11 +2,8 @@ extends layout
 
 
 block content
-  h1= title + " - название третьего приложения"
-  button(type="button" alt="clickMe" onclick="document.location.href ='/home'" ) Вернуться в начало
-
-  #menu
-    a(href=`/`, title="Move Back") Move Back        
+  h1= title + " - название третьего приложения"   
+         
   h2= "Папки в текущей директории:"
   div.flex-container(id="dirs")
   h2= "Файлы в текущей директории:"

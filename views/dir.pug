@@ -1,0 +1,13 @@
+extends layout
+
+
+block content
+  h1= title + " - название третьего приложения"
+  p 
+   button(type="button" alt="clickMe" onclick="document.location.href ='/'" ) Вернуться в начало
+  p 
+   button(type="button" alt="clickMe" onclick="back()" ) Вернуться назад 
+  h2= "Папки в текущей директории:"
+  div.flex-container(id="dirs")
+  h2= "Файлы в текущей директории:"
+  div.flex-container(id="files")      

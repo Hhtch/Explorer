@@ -1,10 +1,10 @@
 async function getFileOrDir() {
   let response = await fetch('/getdir', {
-    method: 'GET',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    
+    body: JSON.stringify(),    
   });
 
   result = await response.json();
@@ -33,7 +33,7 @@ async function getFileOrDir() {
     let div = document.createElement('div');
     div.setAttribute('class', 'flex-item');
     Directory = Dirs[i];
-    div.addEventListener ("click", () => {document.location.href = `path=/${Path}${Dirs[i]}`  }, false);
+    div.addEventListener ("click", () => {document.location.href = `/path=${Path}newdir=${Dirs[i]}`  }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
     img.src = "/images/folder.png";
