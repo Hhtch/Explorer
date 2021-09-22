@@ -6,8 +6,9 @@ block content
   p 
    button(type="button" alt="clickMe" onclick="document.location.href ='/'" ) Вернуться в начало
   p 
-   button(type="button" alt="clickMe" onclick="back()" ) Вернуться назад 
+   button(type="button" alt="clickMe" onclick="back(path)" ) Вернуться назад 
   h2= "Папки в текущей директории:"
   div.flex-container(id="dirs")
   h2= "Файлы в текущей директории:"
-  div.flex-container(id="files")      
+  div.flex-container(id="files")  
+        

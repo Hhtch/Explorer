@@ -1,24 +1,22 @@
-async function getFileOrDir() {
-  let response = await fetch('/getdir', {
-    method: 'POST',
+async function getFileOrDir(data) {
+
+  let response = await fetch(`/getdir/path=${encodeURIComponent(data)}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(),    
   });
-
   result = await response.json();
-  console.log(result);
+
   let Files = result.File;
   let Dirs = result.Directory;
   let Path = result.Path;
-  console.log(`tyt putb ${Path}`)
 
-  for (let i = 0; i < Files.length; i++) {    
+  for (let i = 0; i < Files.length; i++) {
     let list = document.getElementById('files');
     let div = document.createElement('div');
     div.setAttribute('class', 'flex-item');
-    div.addEventListener ("click", () => {getTxt( Files[i] )}, false);
+    div.addEventListener("click", () => { getTxt(Files[i], Path) }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
     img.src = "/images/text_file.png";
@@ -33,7 +31,7 @@ async function getFileOrDir() {
     let div = document.createElement('div');
     div.setAttribute('class', 'flex-item');
     Directory = Dirs[i];
-    div.addEventListener ("click", () => {document.location.href = `/path=${Path}newdir=${Dirs[i]}`  }, false);
+    div.addEventListener("click", () => { document.location.href = `/path=${encodeURIComponent(Path)}&dir=${encodeURIComponent(Dirs[i])}` }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
     img.src = "/images/folder.png";
@@ -43,4 +41,3 @@ async function getFileOrDir() {
     div.appendChild(p);
   }
 }
-getFileOrDir();

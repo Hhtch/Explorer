@@ -3,9 +3,18 @@ html(lang="en")
   head
     title= "Explorer"
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="/javascripts/back.js")  body  
-    button(type="button" alt="clickMe" onclick="back()" ) Вернуться назад 
+    script(src="/javascripts/dir.js")
+    script(src="/javascripts/openTxt.js")
+    script(src="/javascripts/back.js") 
+    script(type='text/javascript').
+      let path = !{data};      
+  body     
+    h1= title + " - название третьего приложения"
+    p 
+    button(type="button" alt="clickMe" onclick="document.location.href ='/'" ) Вернуться в начало
+    p 
+    button(type="button" alt="clickMe" onclick="back(path)" ) Вернуться назад 
     h1= "Вот текстовый документ: "  
-    pre=fileName
-   
+    pre=fileName      
+
         

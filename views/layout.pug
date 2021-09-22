@@ -5,6 +5,9 @@ html(lang="en")
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src="/javascripts/dir.js")
     script(src="/javascripts/openTxt.js")
-    script(src="/javascripts/back.js")  
+    script(src="/javascripts/back.js") 
+    script(type='text/javascript').
+      let path = !{data};
+      getFileOrDir(path); 
   body
     block content
