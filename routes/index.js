@@ -11,7 +11,7 @@ router.get(`/`, function (req, res, next) {
   res.render('index', { title: 'Explorer', data: JSON.stringify(clearPath) });
 });
 
-router.get(`/path=:startPath&dir=:dirName`, function (req, res, next) {
+router.get(`/path=:startPath&dir=:dirName*?`, function (req, res, next) {
   let dir = decodeURIComponent (req.params.dirName);
   let startPath = decodeURIComponent (req.params.startPath);
   startPath = startPath + dir + '\\';
@@ -23,6 +23,52 @@ router.get(`/lastpath=:lastPath`, function (req, res, next) {
   res.render('dir', { title: 'Explorer', data: JSON.stringify(startPath) });
 });
 
+router.get(`/jpg/path=:startPath&file=:fileName`, function (req, res, next) {
+  let fileName = req.params.fileName;
+  let startPath = req.params.startPath;
+  let listName = [];
+  let listJpg = [];
+
+  async function jpgContent() {
+    try {
+      const files = await readdir(startPath);
+      for (const file of files) {
+        const newPath = path.join(startPath, file);
+        const stat = await fs.stat(newPath);
+        if (stat.isFile()) {
+          if (path.extname(file) == ".jpg") {
+            listName.push(file);
+            readfile = await read(newPath);
+            listJpg.push(readfile);
+          };
+
+        }
+      }
+      for (let i = 0; i < listName.length; i++) {
+        Name = listName[i];
+        Img = listJpg[i];
+        if (Name == fileName) {
+          res.render('img', { title: 'Explorer', data: JSON.stringify(startPath), imgload: Img });
+          break;
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function read(fileName) {
+    try {
+      const content = await readFile(fileName, 'base64', 'r');
+      return content;
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+  jpgContent();
+  });
+  
 router.get(`/txt/path=:startPath&file=:fileName`, function (req, res, next) {
   let fileName = req.params.fileName;
   let startPath = req.params.startPath;
@@ -41,13 +87,14 @@ router.get(`/txt/path=:startPath&file=:fileName`, function (req, res, next) {
             readfile = await read(newPath);
             listText.push(readfile);
           };
+
         }
       }
       for (let i = 0; i < listName.length; i++) {
         Name = listName[i];
         TextContent = listText[i];
         if (Name == fileName) {
-          res.render('txt', { title: 'Explorer', data: JSON.stringify(startPath), fileName: TextContent });
+          res.render('txt', { title: 'Explorer', data: JSON.stringify(startPath), text: TextContent });
           break;
         }
       }
@@ -69,8 +116,9 @@ router.get(`/txt/path=:startPath&file=:fileName`, function (req, res, next) {
 
 });
 
-router.post('/gettxt:startPath', function (req, res, next) {
-  let data = [];
+router.get('/getfile:startPath', function (req, res, next) {
+  let txtFile = [];
+  let jpgFile = [];
   let startPath = req.params.startPath;
   async function textName() {
     try {
@@ -80,14 +128,18 @@ router.post('/gettxt:startPath', function (req, res, next) {
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
           if (path.extname(file) == ".txt") {
-            data.push({ "Name": file });
+            txtFile.push( file );
+          };
+          if (path.extname(file) == ".jpg") {
+            jpgFile.push( file );
           };
         }
       }
     } catch (err) {
       console.error(err);
     }
-    res.send(data);
+    let data = {"TxtFile" : txtFile, "JpgFile" : jpgFile } 
+    res.json(data);
   }
   textName();
 

@@ -16,7 +16,7 @@ async function getFileOrDir(data) {
     let list = document.getElementById('files');
     let div = document.createElement('div');
     div.setAttribute('class', 'flex-item');
-    div.addEventListener("click", () => { getTxt(Files[i], Path) }, false);
+    div.addEventListener("click", () => { getFile(Files[i], Path) }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
     img.src = "/images/text_file.png";
