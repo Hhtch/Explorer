@@ -1,10 +1,14 @@
+const { Console } = require('console');
 const express = require('express');
 const router = express.Router();
 const fs = require('fs/promises');
 const { readdir } = require('fs/promises');
 const { readFile } = require('fs/promises');
+const { open } = require('fs/promises');
+const { access } = require('fs/promises');
 const path = require('path');
-
+const mime = require('mime');
+const { constants } = require('fs/promises'); 
 
 router.get(`/`, function (req, res, next) {
   const clearPath = `D:\\1\\`;
@@ -22,6 +26,18 @@ router.get(`/lastpath=:lastPath`, function (req, res, next) {
   startPath = req.params.lastPath;
   res.render('dir', { title: 'Explorer', data: JSON.stringify(startPath) });
 });
+
+router.get(`/getfile=:pathFile`, function (req, res, next) {
+  console.log(req.params.pathFile);
+  //let url = 'D:\\1\\photo.jpg'; 
+  // http://localhost:3000/getfile=D%3A%5C1%5CBrowser%5Cfonts%5Ctest.txt
+  // http://localhost:3000/getfile=D%3A%5C1%5Cphoto.jpg
+  let url = req.params.pathFile;
+  res.setHeader('Content-Type', mime.getType(url));
+  res.status(200);
+  res.sendFile(url);   
+});
+
 
 router.get(`/jpg/path=:startPath&file=:fileName`, function (req, res, next) {
   let fileName = req.params.fileName;
@@ -68,7 +84,7 @@ router.get(`/jpg/path=:startPath&file=:fileName`, function (req, res, next) {
   }
   jpgContent();
   });
-  
+
 router.get(`/txt/path=:startPath&file=:fileName`, function (req, res, next) {
   let fileName = req.params.fileName;
   let startPath = req.params.startPath;
