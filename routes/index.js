@@ -27,15 +27,27 @@ router.get(`/lastpath=:lastPath`, function (req, res, next) {
   res.render('dir', { title: 'Explorer', data: JSON.stringify(startPath) });
 });
 
-router.get(`/getfile=:pathFile`, function (req, res, next) {
-  console.log(req.params.pathFile);
-  //let url = 'D:\\1\\photo.jpg'; 
-  // http://localhost:3000/getfile=D%3A%5C1%5CBrowser%5Cfonts%5Ctest.txt
-  // http://localhost:3000/getfile=D%3A%5C1%5Cphoto.jpg
-  let url = req.params.pathFile;
+router.get(`/getfile`, function (req, res, next) {
+  let url = req.query.path;
+  let options = {
+    lastModified: false, 
+    cacheControl: false,
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    },
+    acceptRanges: false,  
+  }
   res.setHeader('Content-Type', mime.getType(url));
   res.status(200);
-  res.sendFile(url);   
+  res.sendFile(url, options, function (err) {
+      if (err) {
+        res.status(404).send("Sorry! You can't see that.")        
+      }else {
+        console.log('Sent:', path.basename(url))        
+    }
+  })   
 });
 
 
