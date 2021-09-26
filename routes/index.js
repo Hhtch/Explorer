@@ -50,6 +50,26 @@ router.get(`/getfile`, function (req, res, next) {
   })   
 });
 
+router.get(`/mygetfile`, function(req, res, next) {
+  let url = req.query.path;
+  //let url = `D:\\1\\test.txt`
+  console.log(url);
+ 
+
+  async function read(fileName) {
+    try {
+      const content = await readFile(fileName);
+      
+      res.setHeader('Content-Type', mime.getType(url));
+      res.status(200).send(content);
+    } catch (err) {
+      console.error(err);
+    }}
+    
+  read(url);
+    
+});
+
 
 router.get(`/jpg/path=:startPath&file=:fileName`, function (req, res, next) {
   let fileName = req.params.fileName;
