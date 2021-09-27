@@ -8,7 +8,7 @@ const { open } = require('fs/promises');
 const { access } = require('fs/promises');
 const path = require('path');
 const mime = require('mime');
-const { constants } = require('fs/promises'); 
+const { constants } = require('fs/promises');
 
 router.get(`/`, function (req, res, next) {
   const clearPath = `D:\\1\\`;
@@ -16,8 +16,8 @@ router.get(`/`, function (req, res, next) {
 });
 
 router.get(`/path=:startPath&dir=:dirName*?`, function (req, res, next) {
-  let dir = decodeURIComponent (req.params.dirName);
-  let startPath = decodeURIComponent (req.params.startPath);
+  let dir = decodeURIComponent(req.params.dirName);
+  let startPath = decodeURIComponent(req.params.startPath);
   startPath = startPath + dir + '\\';
   res.render('dir', { title: 'Explorer', data: JSON.stringify(startPath) });
 });
@@ -30,44 +30,58 @@ router.get(`/lastpath=:lastPath`, function (req, res, next) {
 router.get(`/getfile`, function (req, res, next) {
   let url = req.query.path;
   let options = {
-    lastModified: false, 
+    lastModified: false,
     cacheControl: false,
     dotfiles: 'deny',
     headers: {
       'x-timestamp': Date.now(),
       'x-sent': true
     },
-    acceptRanges: false,  
+    acceptRanges: false,
   }
   res.setHeader('Content-Type', mime.getType(url));
   res.status(200);
   res.sendFile(url, options, function (err) {
-      if (err) {
-        res.status(404).send("Sorry! You can't see that.")        
-      }else {
-        console.log('Sent:', path.basename(url))        
+    if (err) {
+      res.status(404).send("Sorry! You can't see that.")
+    } else {
+      console.log('Sent:', path.basename(url))
     }
-  })   
+  })
 });
 
-router.get(`/mygetfile`, function(req, res, next) {
-  let url = req.query.path;
-  //let url = `D:\\1\\test.txt`
-  console.log(url);
- 
-
+router.get(`/mygetfile`, function (req, res, next) {
+  let Path = req.query.path;
+  const Dir = "D:\\1";
+  const Size = 1048576;
+  Path = path.normalize(Path);
+  if (path.isAbsolute(Path)) {
+    Path = path.relative(Dir, Path);
+  }
+  let url = path.format({
+    dir: Dir,
+    base: Path,
+  });
+  
   async function read(fileName) {
     try {
+      const stat = await fs.stat(fileName);
+      let fileSizeInBytes = stat.size;
       const content = await readFile(fileName);
-      
-      res.setHeader('Content-Type', mime.getType(url));
-      res.status(200).send(content);
+      if (fileSizeInBytes > Size) {
+        console.log(fileSizeInBytes);
+        res.status(400).send("Too Big");
+      } else {
+        console.log(fileSizeInBytes);
+        res.setHeader('Content-Type', mime.getType(url));
+        res.status(200).send(content);
+      }
     } catch (err) {
       console.error(err);
-    }}
-    
+    }
+  }
+
   read(url);
-    
 });
 
 
@@ -115,7 +129,7 @@ router.get(`/jpg/path=:startPath&file=:fileName`, function (req, res, next) {
 
   }
   jpgContent();
-  });
+});
 
 router.get(`/txt/path=:startPath&file=:fileName`, function (req, res, next) {
   let fileName = req.params.fileName;
@@ -176,17 +190,17 @@ router.get('/getfile:startPath', function (req, res, next) {
         const stat = await fs.stat(newPath);
         if (stat.isFile()) {
           if (path.extname(file) == ".txt") {
-            txtFile.push( file );
+            txtFile.push(file);
           };
           if (path.extname(file) == ".jpg") {
-            jpgFile.push( file );
+            jpgFile.push(file);
           };
         }
       }
     } catch (err) {
       console.error(err);
     }
-    let data = {"TxtFile" : txtFile, "JpgFile" : jpgFile } 
+    let data = { "TxtFile": txtFile, "JpgFile": jpgFile }
     res.json(data);
   }
   textName();
@@ -195,7 +209,7 @@ router.get('/getfile:startPath', function (req, res, next) {
 
 
 router.get(`/getdir/path=:getDir`, function (req, res, next) {
-  let startPath = decodeURIComponent( req.params.getDir);
+  let startPath = decodeURIComponent(req.params.getDir);
   let sendFile = [];
   let sendDir = [];
   async function fileOrDir() {
