@@ -1,3 +1,16 @@
+const fetch = require("node-fetch");
+
+  const createUser = async () => {
+  const response = await fetch('http://website.com/users', {method: 'POST'});
+   
+  const userId = await response?.text();
+  
+  return userId;
+};
+
+module.exports =  {createUser};
+
+/*
 async function getFileOrDir(data) {
 
   let response = await fetch(`/getdir/path=${encodeURIComponent(data)}`, {
@@ -40,4 +53,6 @@ async function getFileOrDir(data) {
     div.appendChild(img);
     div.appendChild(p);
   }
+  //module.exports = { response, result, Files, Dirs, Path };
 }
+//module.exports =  { getFileOrDir}*/

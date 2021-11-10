@@ -1,4 +1,3 @@
-const { Console } = require('console');
 const express = require('express');
 const router = express.Router();
 const fs = require('fs/promises');
@@ -10,9 +9,11 @@ const path = require('path');
 const mime = require('mime');
 const { constants } = require('fs/promises');
 
-router.get(`/`, function (req, res, next) {
+const aaa = router.get(`/`, function (req, res, next) {
+  res.status(200);
   const clearPath = `D:\\1\\`;
   res.render('index', { title: 'Explorer', data: JSON.stringify(clearPath) });
+  module.exports = {clearPath};
 });
 
 router.get(`/path=:startPath&dir=:dirName*?`, function (req, res, next) {
@@ -62,7 +63,7 @@ router.get(`/mygetfile`, function (req, res, next) {
     dir: Dir,
     base: Path,
   });
-  
+
   async function read(fileName) {
     try {
       const stat = await fs.stat(fileName);
@@ -234,3 +235,4 @@ router.get(`/getdir/path=:getDir`, function (req, res, next) {
 });
 
 module.exports = router;
+module.exports = {aaa};

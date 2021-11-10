@@ -1,25 +1,25 @@
-async function getFile(fileName, path) {
+async function getFile(fileName: string, path: string) {
   let response = await fetch(`/getfile${encodeURIComponent(path)}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },    
   });
-  result = await response.json();
+  const result = await response.json();
  
-  let listName = [];
-  listTxtFiles = result.TxtFile;
-  listJpgFiles = result.JpgFile;
+  let listName: string[] = [];
+  const listTxtFiles = result.TxtFile;
+  const listJpgFiles = result.JpgFile;
   
 
   for (let i = 0; i < listTxtFiles.length; i++) {
-    Name = listTxtFiles[i];
+    const Name = listTxtFiles[i];
     if (Name == fileName) {
       document.location.href = `/txt/path=${encodeURIComponent(path)}&file=${fileName}`;
     }
   }
   for (let i = 0; i < listJpgFiles.length; i++) {
-    Name = listJpgFiles[i];
+    const Name = listJpgFiles[i];
     if (Name == fileName) {
       document.location.href = `/jpg/path=${encodeURIComponent(path)}&file=${fileName}`;
     }

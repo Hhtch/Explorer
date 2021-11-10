@@ -1,12 +1,8 @@
-#!/usr/bin/env node
+import {app} from './app';
 
-/**
- * Module dependencies.
- */
-
-const app = require('../app');
-const debug = require('debug')('explorer:server');
-const http = require('http');
+//const app = require("./app");
+import debug from 'debug';
+import http from 'http';
 
 /**
  * Get port from environment and store in Express.
@@ -33,7 +29,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+function normalizePort(val: string) {
   let port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -53,7 +49,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error: any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -83,8 +79,27 @@ function onError(error) {
 
 function onListening() {
   let addr = server.address();
+  if(!addr) return;
   let bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//const server = require('../server');
+

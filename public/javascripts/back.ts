@@ -1,6 +1,6 @@
-function back(data) {
+function back(data: string):void {
   let Path = data;
-  partOfPath = Path.split('\\')
+  const partOfPath = Path.split('\\')
   let StartPath = partOfPath[0] + "\\" + partOfPath[1] + "\\";
   if (StartPath == Path) {
     document.location.href = (`/`);
