@@ -61,7 +61,14 @@ router.get(`/getfile`, function (req, res, next) {
     },
     acceptRanges: false,
   }
-  res.setHeader('Content-Type', mime.getType(url));
+  let mim = mime.getType(url);
+  if(!mim || typeof mim !== "string" )
+    {
+      res.status(400);
+      return;
+    } else {
+  res.setHeader('Content-Type', mim);
+  
   res.status(200);
   res.sendFile(url, options, function (err) {
     if (err) {
@@ -70,6 +77,7 @@ router.get(`/getfile`, function (req, res, next) {
       console.log('Sent:', path.basename( String(url) ))
     }
   })
+}
 });
 
 router.get(`/mygetfile`, function (req, res, next) {
@@ -99,15 +107,20 @@ router.get(`/mygetfile`, function (req, res, next) {
         res.status(400).send("Too Big");
       } else {
         console.log(fileSizeInBytes);
-        res.setHeader('Content-Type', mime.getType(url));
+        let mim = mime.getType(url);
+        if(!mim || typeof mim !== "string" )
+          {
+            res.status(400);
+            return;
+          } else {
+        res.setHeader('Content-Type', mim);
         res.status(200).send(content);
       }
+    }
     } catch (err) {
       console.error(err);
     }
-  }
-
-  read(url);
+  }  read(url);
 });
 
 
