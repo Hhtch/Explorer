@@ -1,11 +1,5 @@
-const request = require("supertest");
-const app = require("../../app.js"); // Почему не работает ./app как и ../app
-
-
-
-
-
-
+import request from "supertest";
+import {app} from "../../app";
   
   describe("Test the root path /mygetfile", () => {
     test("It should response the GET method /mygetfile?path=some_path", async() => {
@@ -15,11 +9,10 @@ const app = require("../../app.js"); // Почему не работает ./app
       .expect('Content-Type', 'image/jpeg')    
         });  
     });
-
-  
+ 
     
-    describe("Test the root path /getdir?path=D:\1\Browser", () => {
-      test("It should response the GET method /getdir?path=D:\1\Browser", async() => {
+    describe("Test the root path /getdir?path=D:/1/Browser", () => {
+      test("It should response the GET method /getdir?path=D:/1/Browser", async() => {
         await request(app)
         .get(`/getdir/path=D%3A%5C1%5CBrowser%5C`)
         .expect('Content-Type', /json/)

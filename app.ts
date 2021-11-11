@@ -39,4 +39,4 @@ app.use(function(err: any, req: any, res: any, next: any) {
   res.render('error');
 });
 
-
+module.exports = {app};

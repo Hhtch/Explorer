@@ -10,16 +10,6 @@ import { Request, Response, Router } from 'express';
 
 const router = express.Router();
 
-
-  interface params {
-  dirName:string;
-  startPath:string;
-  }
-
-function getHandler(request: Request, response: Response) {
-  const {dirName,startPath} = request.query as unknown as params;
-}
-  
 router.get(`/`, function (req, res, next) {
   res.status(200);
   const clearPath = `D:\\1\\`;

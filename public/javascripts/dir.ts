@@ -23,7 +23,7 @@ async function getFileOrDir(data: string) {
     div.addEventListener("click", () => { getFile(Files[i], Path) }, false);
     let p = document.createElement('p');
     var img = document.createElement("img");
-    img.src = "/images/text_file.png";
+    img.src = "../images/text_file.png";
     list.appendChild(div);
     p.appendChild(document.createTextNode(Files[i]));
     div.appendChild(img);
@@ -50,6 +50,3 @@ async function getFileOrDir(data: string) {
   }  
 };
 
-async function createUser(){
-  console.log("aaaa")
-};
