@@ -13,7 +13,7 @@ const routes_1 = __importDefault(require("./routes"));
 const users_1 = __importDefault(require("./routes/users"));
 exports.app = (0, express_1.default)();
 // view engine setup
-exports.app.set('views', path_1.default.join(__dirname, "..", 'views'));
+exports.app.set('views', path_1.default.join(__dirname, 'views'));
 exports.app.set('view engine', 'pug');
 exports.app.use((0, morgan_1.default)('dev'));
 exports.app.use(express_1.default.json());

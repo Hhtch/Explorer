@@ -3,8 +3,8 @@
   "jest": {
     "verbose": true,
     "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "\\.(pug)$": "jest-transform-pug"
+      "^.+\\.jsx?$": "babel-jest",     
+      "\\.(pug)$": "<rootDir>/node_modules/pug-jest"
     }
   },
   "version": "0.0.0",
@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node build/start.js",
     "test": "jest",
-    "build": "tsc"    
+    "build": "tsc"
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.16.0",
@@ -40,8 +40,8 @@
     "@types/supertest": "^2.0.11",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^27.3.1",
-    "jest-transform-pug": "^0.1.0",
+    "jest": "^27.3.1",    
+    "pug-jest": "^1.0.1",
     "source-map-support": "^0.5.20",
     "superagent": "^6.1.0",
     "supertest": "^6.1.6",

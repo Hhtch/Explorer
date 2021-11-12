@@ -13,5 +13,7 @@ module.exports = {
     coverageDirectory: '<rootDir>/test/coverage',
     testEnvironment: 'node',
     testMatch: ['**/*.test.ts'],
-    preset: 'ts-jest'
+    preset: 'ts-jest',
+    bail: true,
+    verbose: true    
 };
